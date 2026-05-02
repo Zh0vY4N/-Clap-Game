@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>拊掌游戏</title>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 大厅 -->
+  <div id="s-lobby" class="screen active">
+    <div class="logo">拊掌游戏</div>
+    <p class="subtitle">变换手势 · 击败敌人</p>
+    <div class="form">
+      <input id="inp-name" placeholder="你的名字" maxlength="8" autocomplete="off">
+      <button id="btn-create" class="btn primary">创建房间</button>
+      <div class="divider">── 或加入已有房间 ──</div>
+      <input id="inp-room" placeholder="房间号（如 A3K7）" maxlength="4" autocomplete="off" style="text-transform:uppercase">
+      <button id="btn-join" class="btn outline">加入房间</button>
+    </div>
+  </div>
+
+  <!-- 等待 -->
+  <div id="s-wait" class="screen">
+    <div class="room-head">
+      <span class="lbl">房间号</span>
+      <span id="d-room" class="room-code"></span>
+      <button id="btn-copy" class="btn tiny">复制</button>
+    </div>
+    <div id="wait-list" class="list-box"></div>
+    <p class="hint">等待玩家加入…（至少2人）</p>
+    <button id="btn-start" class="btn primary" style="display:none">开始游戏</button>
+  </div>
+
+  <!-- 游戏（含结算） -->
+  <div id="s-game" class="screen">
+    <div class="top-bar">
+      <span id="d-round" class="round-lbl">回合 1</span>
+      <span id="d-status" class="status-lbl">选择中…</span>
+    </div>
+    <div id="area-p" class="p-area"></div>
+    <div class="my-bar">
+      <span class="my-hp">❤<b id="my-hp">1</b></span>
+      <span class="my-fee">⚡<b id="my-fee">0</b></span>
+      <span class="my-kn">🔪<b id="my-knives">0</b></span>
+      <span class="my-bg">🔮<b id="my-bagua">0</b></span>
+    </div>
+
+    <!-- ★ 结算栏（游戏结束时显示） -->
+    <div id="gameover-bar" class="gameover-bar" style="display:none">
+      <div id="gameover-txt" class="gameover-txt"></div>
+      <div class="gameover-btns">
+        <button id="btn-restart" class="btn primary sm" style="display:none">再来一局</button>
+        <button id="btn-back" class="btn outline sm">返回大厅</button>
+      </div>
+    </div>
+
+    <div id="cat-tabs" class="cat-tabs"></div>
+    <div id="grid-sk" class="sk-grid"></div>
+    <div id="stack-panel" class="stack-panel" style="display:none">
+      <span>数量：</span>
+      <button id="stk-minus" class="btn tiny">-</button>
+      <span id="stk-val" class="stk-num">1</span>
+      <button id="stk-plus" class="btn tiny">+</button>
+      <span id="stk-cost" class="stk-cost"></span>
+    </div>
+    <div id="target-hint" class="target-hint" style="display:none"></div>
+    <div id="panel-cfm" class="cfm-panel" style="display:none">
+      <span id="cfm-txt"></span>
+      <button id="btn-cfm" class="btn primary sm">确认出招</button>
+      <button id="btn-cancel" class="btn ghost sm">取消</button>
+    </div>
+    <div id="sniper-panel" class="sniper-panel" style="display:none">
+      <div class="sp-title">🎯 狙击目标选择</div>
+      <p class="sp-hint">查看上方卡片中显示的招式，点击玩家卡片选择目标<br>点击自己 = "狙天"（下回合自损1血）</p>
+    </div>
+    <div id="emoji-bar" class="emoji-bar">
+      <button id="emoji-toggle" class="btn tiny emoji-toggle">💬</button>
+      <div id="emoji-panel" class="emoji-panel" style="display:none"></div>
+    </div>
+    <div class="log-box"><div id="log-el" class="log-inner"></div></div>
+  </div>
+
+  <!-- 揭示遮罩 -->
+  <div id="reveal-overlay" class="reveal-overlay" style="display:none">
+    <div class="reveal-title">📋 本轮出招</div>
+    <div id="reveal-cards" class="reveal-cards"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
